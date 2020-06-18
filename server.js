@@ -1,7 +1,7 @@
 const express = require("express");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 
 // look in 'html' FIRST and serve any static file
 app.use(express.static('public'))
@@ -12,6 +12,8 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 //initialize note list and note ID
 let notes = []
 let noteCount = 0;
+
+// app.get('/')
 
 //GET endpoint
 app.get("/api/notes", function( req, res){
