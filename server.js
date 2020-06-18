@@ -6,12 +6,13 @@ const PORT = process.env.PORT || 3001;
 
 // look in 'html' FIRST and serve any static file
 app.use(express.static('public'))
+app.use(express.static('db'))
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 //initialize note list and note ID
-let notes = JSON.parse( fs.readFileSync( './db.json', 'utf8') )
+let notes = []//JSON.parse( fs.readFileSync( '/db.json', 'utf8') )
 
 //GET endpoint
 app.get("/api/notes", function( req, res){
@@ -23,7 +24,7 @@ app.post("/api/notes/", function( req, res){
     const newNote = req.body
     newNote.id = Date.now();
     notes.push( newNote );
-    fs.writeFileSync( './db.json', JSON.stringify(notes) )
+    // fs.writeFileSync( '/db/db.json', JSON.stringify(notes) )
     res.send( notes )
 } )
 
@@ -32,7 +33,7 @@ app.delete("/api/notes/:id", function( req, res){
     const noteID = req.params.id
     notes = notes.filter( note => note.id != noteID )
     // console.log( notes )
-    fs.writeFileSync( './db.json', JSON.stringify(notes) )
+    // fs.writeFileSync( '/db/db.json', JSON.stringify(notes) )
     res.send( notes )
 })
 
@@ -44,7 +45,7 @@ app.put( '/api/notes', function( req, res ){
     const noteIdx = notes.findIndex( revidesNote )
 
     notes[noteIdx] = revidesNote
-    fs.writeFileSync( './db.json', JSON.stringify(notes) )
+    // fs.writeFileSync( '/db/db.json', JSON.stringify(notes) )
     res.send( { status: true, message: `Note revised` } )
 })
 
